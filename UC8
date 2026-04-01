@@ -1,0 +1,51 @@
+import java.util.*;
+class Reservation {
+    String bookingId;
+    String guestName;
+    String roomType;
+    String roomId;
+    public Reservation(String bookingId, String guestName, String roomType, String roomId) {
+        this.bookingId = bookingId;
+        this.guestName = guestName;
+        this.roomType = roomType;
+        this.roomId = roomId;
+    }
+}
+class BookingHistory {
+    private List<Reservation> history = new ArrayList<>();
+    public void addReservation(Reservation reservation) {
+        history.add(reservation);
+    }
+    public List<Reservation> getAllReservations() {
+        return new ArrayList<>(history);
+    }
+}
+class BookingReportService {
+    public void printAllBookings(List<Reservation> reservations) {
+        for (Reservation r : reservations) {
+            System.out.println(r.bookingId + " | " + r.guestName + " | " + r.roomType + " | " + r.roomId);
+        }
+    }
+    public void generateSummary(List<Reservation> reservations) {
+        Map<String, Integer> summary = new HashMap<>();
+        for (Reservation r : reservations) {
+            summary.put(r.roomType, summary.getOrDefault(r.roomType, 0) + 1);
+        }
+        System.out.println("\nSummary Report:");
+        for (String type : summary.keySet()) {
+            System.out.println(type + " -> " + summary.get(type));
+        }
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        BookingHistory history = new BookingHistory();
+        BookingReportService reportService = new BookingReportService();
+        history.addReservation(new Reservation("B201", "Arun", "Deluxe", "D101"));
+        history.addReservation(new Reservation("B202", "Priya", "Standard", "S201"));
+        history.addReservation(new Reservation("B203", "Kiran", "Deluxe", "D102"));
+        List<Reservation> data = history.getAllReservations();
+        reportService.printAllBookings(data);
+        reportService.generateSummary(data);
+    }
+}
